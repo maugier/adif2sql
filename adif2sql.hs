@@ -32,6 +32,7 @@ numeric = all (`elem` ['0'..'9'])
 transform "band" s = Just ("band", escape s)
 transform "call" s = Just ("call", escape s)
 transform "mode" s = Just ("mode", escape s)
+transform "name" s = Just ("name", escape s)
 transform "qso_date" s = Just ("qso_date", escape $ 
 			year s ++ "-" ++ month s ++ "-" ++ day s)
 transform "time_on" s = Just ("time_on", escape (
