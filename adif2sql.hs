@@ -31,8 +31,11 @@ group n = map (take n) . takeWhile (not.null) . iterate (drop n)
 numeric = all (`elem` ['0'..'9'])
 
 
+
 transform "band" s = Just ("band", escape s)
 transform "call" s = Just ("call", escape s)
+transform "freq" "7" = Just ("band", escape "40m")
+transform "freq" "14" = Just ("band", escape "20m")
 transform "mode" s = Just ("mode", escape s)
 transform "name" s = Just ("name", escape s)
 transform "qso_date" s = Just ("qso_date", escape $ 
