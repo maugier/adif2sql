@@ -1,5 +1,6 @@
 import ADIF
 
+import Data.Char
 import Data.Map hiding (null, map)
 import Data.List (intersperse)
 import Data.Maybe
@@ -40,7 +41,9 @@ transform "time_on" s = Just ("time_on", escape (
 		concat . intersperse ":" . group 2 $ s))
 transform "rst_sent" s      | numeric s = Just ("rst_sent", s)
 transform "rst_rcvd" s  | numeric s = Just ("rst_rcvd", s)
-transform _ _ = Nothing
+transform "" _ = Nothing
+transform t s | isUpper (head t) = transform (map toLower t) s
+              | otherwise = Nothing
 
 transformMap = fromList . catMaybes . map (uncurry transform) . toList
 
