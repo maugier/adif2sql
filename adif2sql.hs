@@ -4,6 +4,7 @@ import Data.Map hiding (null, map)
 import Data.List (intersperse)
 import Data.Maybe
 import System.Environment
+import System.IO
 
 project :: (Ord k1, Ord k2) => Map k1 k2 -> Map k1 a -> [(k2,a)]
 project m = toList . mapKeys (m !) . filterWithKey (const . flip member m)   
@@ -49,8 +50,10 @@ main = do
 	args <- getArgs
 	case args of
 		[list_id, file] -> do
-			Right qso <- adifFromFile file
-			putStr (qso2sql list_id qso)
+			parsed <- adifFromFile file
+			case parsed of
+				Right qso -> putStr (qso2sql list_id qso)
+				Left err  -> hPutStrLn stderr $ show err
 
 		_ -> do putStrLn "Usage: adif2sql <list_id> <adif_file>"
 		        return ()
